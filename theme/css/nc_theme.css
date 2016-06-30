@@ -1,0 +1,15 @@
+table.lined {
+	border-collapse: collapse;
+	border: solid 2px black;
+}
+
+table.lined  td,
+table.lined  th {
+	border: solid 1px black;
+	padding: 5px;
+}
+
+span.mono {
+	font-family: monospace;
+	font-size: 1.5em;
+}
