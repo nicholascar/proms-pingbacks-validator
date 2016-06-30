@@ -112,15 +112,35 @@ function is_valid_proms_body($content_type, $body) {
 		return array(false,'The message body could not be parsed. ' . $e->getMessage());
 	}
 	
-	$r1 = rule_must_link_entity_pingback('http://promsns.org/pingbacks/validator/validator-proms.php', $graph);
-	if (!$r1[0]) {
-		$errors[] = $r1[1];
+	$r2 = rule_declare_as_bundle($graph);
+	if (!$r2[0]) {
+		$errors[] = $r2[1];
+	}
+	
+	$r3 = rule_must_link_entity_pingback('http://promsns.org/pingbacks/validator/validator-proms.php', $graph);
+	if (!$r3[0]) {
+		$errors[] = $r3[1];
 	}
 	
 	if (count($errors) > 0) {
 		return array(false,implode("\n", $errors));
 	} else {
 		return array(true);
+	}
+}
+
+// TODO: work out exacly what resource (URI) should be declared a Bundle
+function rule_declare_as_bundle($graph) {
+	$pass = false;
+	$entities = $graph->allOfType('prov:Bundle');
+	foreach ($entities as $entity) {
+		$pass = true;
+	}
+	
+	if ($pass) {
+		return array(true);
+	} else {
+		return array(false, 'R1: No prov:bundle found');
 	}
 }
 
@@ -135,6 +155,7 @@ function is_valid_proms_body($content_type, $body) {
 *		prov:pingback <http://promsns.org/pingbacks/validator/validator-proms.php>.
 *
 */
+// TODO: add support for prov:Entity subclasses
 function rule_must_link_entity_pingback($pingback_uri, $graph) {
 	$entities = $graph->allOfType('prov:Entity');
 	foreach ($entities as $entity) {
@@ -145,6 +166,6 @@ function rule_must_link_entity_pingback($pingback_uri, $graph) {
 		}
 	}
 	
-	return array(false, 'No prov:Entity contains a prov:pingback property pointing to ' . $pingback_uri);
+	return array(false, 'R2: No prov:Entity contains a prov:pingback property pointing to ' . $pingback_uri);
 }
 ?>
