@@ -82,6 +82,7 @@ function is_valid_proms_header($headers) {
 }
 
 function is_valid_proms_body($content_type, $body) {
+	$errors = array();
 	switch ($content_type) {
 		case 'text/turtle':
 			$parser = 'turtle';
@@ -107,13 +108,43 @@ function is_valid_proms_body($content_type, $body) {
 	try {
 		$graph->parse($body, $parser, null);
 	} catch (Exception $e) {
+		// instant fail so return without testing for other errors
 		return array(false,'The message body could not be parsed. ' . $e->getMessage());
 	}
 	
-	if (!isset($graph)) {
-		return array(false,'The message body could not be parsed');
+	$r1 = rule_must_link_entity_pingback('http://promsns.org/pingbacks/validator/validator-proms.php', $graph);
+	if (!$r1[0]) {
+		$errors[] = $r1[1];
+	}
+	
+	if (count($errors) > 0) {
+		return array(false,implode("\n", $errors));
 	} else {
 		return array(true);
 	}
+}
+
+/*
+*	Rule: the pingback Report must contain one and only one prov:Entity
+*	with a prov:pingback property pointing to the URI that received the
+*	Report.
+*
+*	For this service, all Reports sent here must contain:
+*
+*	<x> a prov:Entity;
+*		prov:pingback <http://promsns.org/pingbacks/validator/validator-proms.php>.
+*
+*/
+function rule_must_link_entity_pingback($pingback_uri, $graph) {
+	$entities = $graph->allOfType('prov:Entity');
+	foreach ($entities as $entity) {
+		if ($pingback = $graph->get($entity->getUri(), 'prov:pingback')) {
+			if ($pingback == $pingback_uri) {
+				return array(true);
+			}
+		}
+	}
+	
+	return array(false, 'No prov:Entity contains a prov:pingback property pointing to ' . $pingback_uri);
 }
 ?>
