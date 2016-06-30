@@ -1,3 +1,4 @@
+<p>This form allows you to test out pingback messages you create elsewhere and submit manually.</p>
 <h3>Paste your pingback message into the text area below and then select options.</h3>
 <textarea name="msg" id="msg" style="width:700px;min-height:300px;">
 </textarea>
