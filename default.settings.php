@@ -1,0 +1,6 @@
+<?php
+
+$WEB_SUBFOLDER = '';
+
+
+?>

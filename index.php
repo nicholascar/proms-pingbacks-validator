@@ -1,4 +1,6 @@
 <?php
+	include 'settings.php';
+
 	if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		$title = 'Pingback message validator';
 		$main_menu_file = 'nav.inc';
@@ -11,6 +13,8 @@
 				include 'form.php';
 			} elseif ($_GET['q'] == 'about') {
 				include 'about.php';
+			} elseif ($_GET['q'] == 'contact') {
+				include 'contact.php';				
 			} else {
 				include 'about.php';
 			}

@@ -1,5 +1,9 @@
 <!--<h3 style="color:red;">NOTE: the validator is not yet operating. ETA is November 20, 2015</h2>-->
-<h2>How to use the validator</h2>
+<h2>About the Validator</h2>
+<p>This pingbacks message validator has been established to help people validate <a href="http://www.w3.org/TR/prov-aq/">PROV-AQ</a> and <a href="http://promsns.org">PROMS</a> 'pingback' messages. These messages are used to communicate the provenance of things between provenance mangament systems.</p>
+<p>PROV-AQ is the <a href="https://www.w3.org/">W3C</a> technical note (hopefully soon a W3C recommendation) in the <a href="https://www.w3.org/TR/prov-dm/">PROV Data Model</a> family of documents. PROMS is the Australian extension to PROV. Regarding pingbacks, PROMS just allows the sending of provenance 'bundles' as well as links to further provenance recources as PROV-AQ does.</p>
+
+<h2>How to use the Validator</h2>
 <ol>
 	<li>
 		formulate your message
