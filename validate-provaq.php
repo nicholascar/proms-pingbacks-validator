@@ -16,12 +16,7 @@
 */
 include 'validator.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-	// only accept POST requests
-	http_response_code(405); 
-	header('Content-Type: text/plain');
-	print 'Method not allowed'."\n".'This resource accepts POST messages only';
-} else {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	$headers = getallheaders();
 	$body = trim(file_get_contents("php://input"));
 	$parseresult = parse_provaq_msg($headers, $body);
@@ -33,6 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		// parsed successfully
 		http_response_code(204);
 	}
+} else {
+	// only accept POST requests
+	http_response_code(405); 
+	header('Content-Type: text/plain');
+	print 'Method not allowed'."\n".'This resource accepts POST messages only';
 }
 
 // every entry in the message must be URI, one per line
@@ -51,7 +51,7 @@ function parse_provaq_msg($headers, $body) {
 	}
 	
 	if (count($errors) > 0) {
-		return array(false,'ERROR: you message is invalid for the following reasons: ' . "\n" . implode("\n", $errors));
+		return array(false,'ERROR: you message is invalid for the following reasons.' . "\n" . implode("\n", $errors));
 	} else {	
 		return array(true);
 	}

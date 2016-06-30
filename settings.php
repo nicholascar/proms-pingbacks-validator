@@ -1,6 +1,6 @@
 <?php
 
-$WEB_SUBFOLDER = '';
+$WEB_SUBFOLDER = '/pingbacks/validator';
 
 
 ?>

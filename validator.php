@@ -32,7 +32,7 @@ function is_valid_provaq_header($headers) {
 		}		
 		
 		if (count($errors) > 0) {
-			return array(false,'The header doesn\'t validate, specifically: ' . "\n" . implode(', ', $errors));
+			return array(false,'The header doesn\'t validate, specifically: ' . "\n" . implode("\n", $errors));
 		} else {	
 			return array(true);
 		}
@@ -55,7 +55,7 @@ function is_valid_provaq_body($body) {
 	}
 	
 	if (count($errors) > 0) {
-		return array(false,'The message body header doesn\'t validate, specifically: ' . "\n" . implode('\n', $errors));
+		return array(false,'The message body header doesn\'t validate, specifically: ' . "\n" . implode("\n", $errors));
 	} else {
 		return array(true);
 	}
@@ -81,19 +81,37 @@ function is_valid_proms_header($headers) {
 	}
 }
 
-function is_valid_proms_body($parser, $body) {
+function is_valid_proms_body($content_type, $body) {
+	switch ($content_type) {
+		case 'text/turtle':
+			$parser = 'turtle';
+		break;
+		case 'text/n3':
+			$parser = 'ntriples';
+		break;
+		case 'application/rdf+xml':
+			$parser = 'rdfxml';
+		break;
+		case 'application/ld+json':
+			$parser = 'jsonld';
+		break;
+		default:
+			$parser = 'turtle';
+		break;		
+	}
 	// interpret the body
 	// get the required parser from the header, which we know at this point is valid
 	set_include_path(get_include_path() . PATH_SEPARATOR . 'easyrdf-0.9.0/lib/');
 	require_once "EasyRdf.php";
 	$graph = new EasyRdf_Graph(null);
-	$graph->parse($body, $parser, null);
-	//$parser = $headers['Content-Type'];
-	
-	//print $graph->serialise('ntriples');
+	try {
+		$graph->parse($body, $parser, null);
+	} catch (Exception $e) {
+		return array(false,'The message body could not be parsed. ' . $e->getMessage());
+	}
 	
 	if (!isset($graph)) {
-		return array(false,'The message body could not be parsed'));
+		return array(false,'The message body could not be parsed');
 	} else {
 		return array(true);
 	}
