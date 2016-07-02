@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 	// only accept POST requests
 	http_response_code(405); 
 	header('Content-Type: text/plain');
-	print 'Method not allowed'."\n".'This resource accepts POST messages only';
+	print 'Method not allowed'."\n".'This is the PROV-AQ message validator endpoint but it only accepts HTTP POST messages.';
 }
 
 // every entry in the message must be URI, one per line
@@ -51,7 +51,7 @@ function parse_provaq_msg($headers, $body) {
 	}
 	
 	if (count($errors) > 0) {
-		return array(false,'ERROR: you message is invalid for the following reasons.' . "\n" . implode("\n", $errors));
+		return array(false,'ERROR: your PROV-AQ pingback message is invalid for the following reasons.' . "\n" . implode("\n", $errors));
 	} else {	
 		return array(true);
 	}

@@ -16,10 +16,10 @@
 			} elseif ($_GET['q'] == 'contact') {
 				include 'contact.php';				
 			} else {
-				include 'about.php';
+				include 'home.php';
 			}
 		} else {
-			include 'about.php';
+			include 'home.php';
 		}
 		include 'theme/template-footer.inc';
 	}

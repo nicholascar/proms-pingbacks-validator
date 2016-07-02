@@ -112,12 +112,14 @@ function is_valid_proms_body($content_type, $body) {
 		return array(false,'The message body could not be parsed. ' . $e->getMessage());
 	}
 	
+	/*
 	$r2 = rule_declare_as_bundle($graph);
 	if (!$r2[0]) {
 		$errors[] = $r2[1];
 	}
+	*/
 	
-	$r3 = rule_must_link_entity_pingback('http://promsns.org/pingbacks/validator/validator-proms.php', $graph);
+	$r3 = rule_must_link_entity_pingback('http://promsns.org/pingbacks/validator/validate-proms', $graph);
 	if (!$r3[0]) {
 		$errors[] = $r3[1];
 	}
@@ -125,7 +127,8 @@ function is_valid_proms_body($content_type, $body) {
 	if (count($errors) > 0) {
 		return array(false,implode("\n", $errors));
 	} else {
-		return array(true);
+		// count the triples 'inserted'
+		return array(true, $graph->countTriples());
 	}
 }
 
@@ -152,7 +155,7 @@ function rule_declare_as_bundle($graph) {
 *	For this service, all Reports sent here must contain:
 *
 *	<x> a prov:Entity;
-*		prov:pingback <http://promsns.org/pingbacks/validator/validator-proms.php>.
+*		prov:pingback <http://promsns.org/pingbacks/validator/validator-proms>.
 *
 */
 // TODO: add support for prov:Entity subclasses

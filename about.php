@@ -1,5 +1,6 @@
 <h2>About the Validator</h2>
 <p>This pingbacks message validator has been established to help people validate PROV-AQ and PROMS 'pingback' messages. These messages are used to communicate provenance information between provenance mangament systems.</p>
+<p>The code for this system is at <a href="https://github.com/nicholascar/proms-pingbacks-validator">https://github.com/nicholascar/proms-pingbacks-validator</a>.</p>
 
 <h2>About pingback messages</h2>
 <p>Pingback messages are HTTP messages from a client to a server informing the server about provenance information for a target resource that the recieving pingbacks endpoint has been set up to process.</p>
@@ -25,8 +26,8 @@
 			<li>you can use any system that can send HTTP requests like <a href="http://curl.haxx.se/">cURL</a></li>
 			<li>use the validator form (<a href="http://promsns.org/pingbacks/validator/form">http://promsns.org/pingbacks/validator/form</a>) for manual input</li>
 			<li>the <a href="http://promsns.org/repo/proms-pingbacks-message-generator">PROMS Pingbacks message generator</a> can send POSt requests using Python's <em>requests</em> module</li>
-			<li><strong>send PROV-AQ messages to <a href="http://promsns.org/pingbacks/validator/validate-provaq.php">http://promsns.org/pingbacks/validator/validate-provaq.php</a></strong></li>
-			<li><strong>send PROMS messages to <a href="http://promsns.org/pingbacks/validator/validate-proms.php">http://promsns.org/pingbacks/validator/validate-proms.php</a></strong></li>
+			<li><strong>send PROV-AQ messages to <a href="http://promsns.org/pingbacks/validator/validate-provaq">http://promsns.org/pingbacks/validator/validate-provaq</a></strong></li>
+			<li><strong>send PROMS messages to <a href="http://promsns.org/pingbacks/validator/validate-proms">http://promsns.org/pingbacks/validator/validate-proms</a></strong></li>
 		</ul>
 	</li>
 	<li>
@@ -38,8 +39,8 @@
 </ol>
 <h3>Validator Endpoints</h3>
 <ul>
-	<li><strong>PROV-AQ messages:</strong> <a href="http://promsns.org/pingbacks/validator/validate-provaq.php">http://promsns.org/pingbacks/validator/validate-provaq.php</a></li>
-	<li><strong>PROMS messages:</strong> <a href="http://promsns.org/pingbacks/validator/validate-proms.php">http://promsns.org/pingbacks/validator/validate-proms.php</a></li>
+	<li><strong>PROV-AQ messages:</strong> <a href="http://promsns.org/pingbacks/validator/validate-provaq">http://promsns.org/pingbacks/validator/validate-provaq</a></li>
+	<li><strong>PROMS messages:</strong> <a href="http://promsns.org/pingbacks/validator/validate-proms">http://promsns.org/pingbacks/validator/validate-proms</a></li>
 </ul>
 
 <h2>Pingback messages description</h2>
@@ -132,7 +133,7 @@ http://other.org/provenance-resource.rdf
 <p><span class="mono">has_query_service</span> links may be specified for non-target resources too.</p>
 
 <h4>PROV-AQ responses</h4>
-<p>Valid messages recieve and HTTP 204 'No Content' status code and no response body. Invalid messages receive an HTTP 400 'Bad Command' status code and one or more detailed error messages in the response body as plain text.</p>
+<p>Valid messages recieve a response HTTP status code of 204 'No Content' and no response body. Invalid messages receive an HTTP 400 'Bad Command' status code and one or more detailed error messages in the response body as plain text.</p>
 
 <h3>PROMS messages</h3>
 <p>These messages are RDF documents that must be sent with one of the following Content-Type headers:</p>
@@ -156,9 +157,9 @@ http://other.org/provenance-resource.rdf
 <table class="plain">
 	<tr><th></th><th>Name</th><th>Description</th></tr>
 	<tr><th>Rule&nbsp;1</th><td>PROV-O</td><td>The RDF document must be a valid <a href="https://www.w3.org/TR/prov-o/">PROV-O</a> document as per the <a href="https://www.w3.org/TR/prov-constraints/">PROV constraints</a>.<br /><em>(not implemented yet)</em></td></tr>
-	<tr><th>Rule&nbsp;2</th><td>Bundle</td><td>The RDF document must declare itself a <code>prov:Bundle</code></td></tr>
-	<tr><th>Rule&nbsp;3</th><td>Pingback Property</td><td>At least one <code>prov:Entity</code> (or subclass) must declare a <code>prov:pingback</code> property pointing to the pingback target. In this validator's case, an Entity must have a property pointing to <code>&lt;http://promsns.org/pingbacks/validator/validator-proms.php&gt;</code></td></tr>
+	<!--<tr><th>Rule&nbsp;2</th><td>Bundle</td><td>The RDF document must declare itself a <code>prov:Bundle</code></td></tr>-->
+	<tr><th>Rule&nbsp;2</th><td>Pingback Property</td><td>At least one <code>prov:Entity</code> (or subclass) must declare a <code>prov:pingback</code> property with the pingback target URI as its range value (object). In this validator's case, an Entity must have a property pointing to <code>&lt;http://promsns.org/pingbacks/validator/validator-proms&gt;</code></td></tr>
 </table>
 
 <h4>PROMS responses</h4>
-<p>Valid messages recieve and HTTP 201 'Inserted' status code and a resonse body, in plain text, of the phrase "Inserted {COUNT} triples." reflecting the number of triples inserted into the receiving triplestore. Invalid messages receive an HTTP 400 'Bad Command' status code and one or more detailed error messages in the response body as plain text.</p>
+<p>Valid messages recieve a response HTTP status code of 201 'Created' and a resonse body, in plain text, of the phrase "Created {COUNT} triples." reflecting the number of triples inserted into the receiving triplestore. No actual insert takes place in the validator. Invalid messages receive an HTTP 400 'Bad Command' status code and one or more detailed error messages in the response body as plain text.</p>
