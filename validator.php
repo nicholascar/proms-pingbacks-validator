@@ -9,27 +9,31 @@ function is_valid_provaq_header($headers) {
 		return array(false, 'The Content-Type must be set to text/uri-list');
 	}
 	
-	// valid if Link header not set
-	if (!isset($headers['Link'])) {
+	// valid if Link header not set and Content-Length != 0
+	if (empty($headers['Link']) and $headers['Content-Length'] != 0) {
 		return array(true);
 	} else {
-		$parts = explode(';', $headers['Link']);
-		if (count($parts) != 3) {
-			$errors[] = 'It doesn\'t have 3 parts';
-		}
-		
-		// TODO: match the <>
-		if (!is_valid_uri(trim($parts[0], "<>"))) {
-			$errors[] = 'The first part (inside "<" & ">") is not a valid URI';
-		}
-		
-		if (!in_array($parts[1], array('rel="http://www.w3.org/ns/prov#has_provenance"', 'rel="http://www.w3.org/ns/prov#has_query_service"'))) {
-			$errors[] = 'The rel part must be either rel="http://www.w3.org/ns/prov#has_provenance" or rel="http://www.w3.org/ns/prov#has_query_service"';
-		}
+		foreach (explode(",", $headers['Link']) as $link_header) {
+			$parts = explode(';', trim($link_header, "\n"));
+			if (count($parts) != 3) {
+				$errors[] = 'A Link doesn\'t have 3 parts. Your Link header was: ' . $link_header;
+			} else {
+				$uri_part = trim(trim($parts[0]), "<>");
+				if (substr(trim($parts[0]),0,1) != '<' or !is_valid_uri($uri_part) or substr(trim($parts[0]),strlen($parts[0])-1,1) != '>') {
+					$errors[] = 'The first part must be a valid URI inside "<" & ">". You gave: ' . str_replace('>', '&gt;',(str_replace('<', '&lt;', trim($parts[0]))));
+				}
+				
+				if (!in_array(trim($parts[1]), array('rel="http://www.w3.org/ns/prov#has_provenance"', 'rel="http://www.w3.org/ns/prov#has_query_service"'))) {
+					$errors[] = 'Each rel part must be either rel="http://www.w3.org/ns/prov#has_provenance" or rel="http://www.w3.org/ns/prov#has_query_service". You gave: ' . $parts[1];
+				}
 
-		if (substr($parts[2], 0, 7) != 'anchor=' or !is_valid_uri(trim(substr($parts[2], 7), "\""))) {			
-			$errors[] = 'The anchor part must start with "anchor=" and then a valid URI';
-		}		
+				$anchor_text = substr(trim($parts[2]), 0, 7);
+				$anchor_uri = trim(substr(trim($parts[2]), 7), "\"");
+				if ($anchor_text != 'anchor=' or !is_valid_uri($anchor_uri)) {			
+					$errors[] = 'Each anchor part must start with "anchor=" followed by a valid URI in double quotes. You gave: ' . trim($parts[2]);
+				}
+			}
+		}
 		
 		if (count($errors) > 0) {
 			return array(false,'The header doesn\'t validate, specifically: ' . "\n" . implode("\n", $errors));
@@ -43,7 +47,7 @@ function is_valid_provaq_header($headers) {
 function is_valid_provaq_body($body) {
 	$errors = array();
 	
-	$uris = explode("\n", $body);
+	$uris = explode("\n", str_replace('\r', '', $body));
 	if (count($uris) < 1) {
 		$errors[] = 'Body contains no URIs';
 	}	

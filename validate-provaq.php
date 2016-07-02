@@ -44,10 +44,14 @@ function parse_provaq_msg($headers, $body) {
 		$errors[] = $valid_header[1];
 	}
 
-	// validate body
-	$valid_body = is_valid_provaq_body($body);
-	if (!$valid_body[0]) {
-		$errors[] = $valid_body[1];
+	// cater for the case of a Link header and no body content
+	// must declare Content-Length: 0
+	if ($headers['Content-Length'] != 0) {
+		// validate body
+		$valid_body = is_valid_provaq_body($body);
+		if (!$valid_body[0]) {
+			$errors[] = $valid_body[1];
+		}
 	}
 	
 	if (count($errors) > 0) {

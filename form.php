@@ -1,6 +1,11 @@
 <p>This form allows you to test out pingback messages you create elsewhere and submit manually.</p>
 <h3>Paste your pingback message into the text area below and then select options.</h3>
-<textarea id="msg" name="msg" style="width:800px;min-height:300px;"></textarea>
+<div class="provaq">
+	<p><strong><em>OPTIONAL:</em></strong> HTTP 'Link' headers, as per PROV-AQ:</p>
+	<textarea id="link-header" class="provaq" name="link-header" style="width:800px;min-height:50px;"></textarea>
+</div><!-- #link -->
+<p><strong><em>REQUIRED:</em></strong> HTTP message body, <span class="provaq">URIs, one per line:</span><span class="proms" style="display:none;">an RDF document for PROMS messages:</span></p>
+<textarea id="msg" name="msg" style="width:800px;min-height:100px;"></textarea>
 <style>
 table#formoptions th,
 table#formoptions td {
@@ -24,7 +29,7 @@ table#formoptions td {
 </table>
 <br />
 <input type="hidden" name="ct" id="ct" value="text/uri-list" />
-<input type="hidden" name="loc" id="loc" value="/pingbacks/validator/validate-provaq.php" />
+<input type="hidden" name="loc" id="loc" value="/pingbacks/validator/validate-provaq" />
 <input id="submit" type="submit" value="Validate" /><div id="loading"><img src="<?php print $WEB_SUBFOLDER; ?>/theme/img/spinner.gif" style="height:1em" /> processing...</div>
 <div id="results" style="width:800px; margin-top:10px; display:none; border:solid 1px black;">
 	<div id="result" name="result" style="padding:5px; overflow:auto;"></div>
@@ -42,11 +47,15 @@ table#formoptions td {
 				$('#contenttype').html(contenttypes);
 				$("#ct").attr('value', 'text/turtle');
 				$("#turtle").attr('checked', 'checked');
-				$('#loc').attr('value', '/pingbacks/validator/validate-proms.php');
+				$('#loc').attr('value', '/pingbacks/validator/validate-proms');
+				$('.provaq').hide();
+				$('.proms').show();
 			} else {
 				$('#contenttype').html('Content Type: <input type="radio" name="contenttype" id="urilist" value="text/uri-list" checked="checked" /><code>text/uri-list</code>');
 				$("#ct").attr('value', 'text/uri-list');
-				$('#loc').attr('value', '/pingbacks/validator/validate-provaq.php');
+				$('#loc').attr('value', '/pingbacks/validator/validate-provaq');
+				$('.provaq').show();
+				$('.proms').hide();
 			}
 		});
 		
@@ -55,10 +64,17 @@ table#formoptions td {
 		});
 
 		jQuery('#submit').click(function(){
+			var link_header = '';
+			if ($('#link-header').css('display') != 'none') {
+				link_header = $('#link-header').val();
+			}
 			// do post
 			$.ajax({
 				url: $('#loc').val(),
 				type: "POST",
+				headers: {
+					"Link": link_header
+				},
 				contentType: $('#ct').val(),
 				data: $('#msg').val(),
 				dataType: "text",
