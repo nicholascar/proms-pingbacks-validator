@@ -159,6 +159,7 @@ http://other.org/provenance-resource.rdf
 	<tr><th>Rule&nbsp;1</th><td>PROV-O</td><td>The RDF document must be a valid <a href="https://www.w3.org/TR/prov-o/">PROV-O</a> document as per the <a href="https://www.w3.org/TR/prov-constraints/">PROV constraints</a>.<br /><em>(not implemented yet)</em></td></tr>
 	<!--<tr><th>Rule&nbsp;2</th><td>Bundle</td><td>The RDF document must declare itself a <code>prov:Bundle</code></td></tr>-->
 	<tr><th>Rule&nbsp;2</th><td>Pingback Property</td><td>At least one <code>prov:Entity</code> (or subclass) must declare a <code>prov:pingback</code> property with the pingback target URI as its range value (object). In this validator's case, an Entity must have a property pointing to <code>&lt;http://promsns.org/pingbacks/validator/validator-proms&gt;</code></td></tr>
+	<tr><th>Rule&nbsp;3</th><td>Entities Used</td><td>All Entities with pingback properties declared, as per Rule 2, must only be <em>used</em> or otherwise consumed by Activities, not <em>wasGeneratedBy</em>. Anything reported as having been generated in new provenance information cannot already have pre-existing provenance for a pingbacked message payload to be added to.</code><br /><em>(not implemented yet)</em></td></tr>	
 </table>
 
 <h4>PROMS responses</h4>
