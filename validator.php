@@ -123,10 +123,15 @@ function is_valid_proms_body($content_type, $body) {
 	}
 	*/
 	
-	$r3 = rule_must_link_entity_pingback('http://promsns.org/pingbacks/validator/validate-proms', $graph);
+	$r2 = rule_must_link_entity_pingback('http://promsns.org/pingbacks/validator/validate-proms', $graph);
+	if (!$r2[0]) {
+		$errors[] = $r2[1];
+	}
+	
+	$r3 = rule_entities_must_be_used($graph);
 	if (!$r3[0]) {
 		$errors[] = $r3[1];
-	}
+	}	
 	
 	if (count($errors) > 0) {
 		return array(false,implode("\n", $errors));
@@ -165,6 +170,8 @@ function rule_declare_as_bundle($graph) {
 // TODO: add support for prov:Entity subclasses
 function rule_must_link_entity_pingback($pingback_uri, $graph) {
 	$entities = $graph->allOfType('prov:Entity');
+	$plans = $graph->allOfType('prov:Plan');
+	$entities = array_merge($entities, $plans);
 	foreach ($entities as $entity) {
 		if ($pingback = $graph->get($entity->getUri(), 'prov:pingback')) {
 			if ($pingback == $pingback_uri) {
@@ -174,5 +181,34 @@ function rule_must_link_entity_pingback($pingback_uri, $graph) {
 	}
 	
 	return array(false, 'R2: No prov:Entity contains a prov:pingback property pointing to ' . $pingback_uri);
+}
+
+function rule_entities_must_be_used($graph) {
+	$r3_fail_msg = 'R3: Pingbacks cannot be sent for Entities declared as prov:wasGeneratedBy or prov:wasDerivedFrom in the pingbacked graph';
+	$entities = $graph->allOfType('prov:Entity');
+	$plans = $graph->allOfType('prov:Plan');
+	$entities = array_merge($entities, $plans);
+	$entities_being_pingedback = array();
+	$test_output = '';
+	# get the URI for each entity with a prov:pingback property
+	foreach ($entities as $entity) {
+		if ($pingback = $graph->get($entity->getUri(), 'prov:pingback')) {
+			$entities_being_pingedback[] = $entity->getUri();
+		}
+	}
+	
+	foreach ($entities_being_pingedback as $pingback_entity) {
+		if ($pingback = $graph->get($pingback_entity,'prov:wasGeneratedBy')) {
+			return array(false, $r3_fail_msg . ' (fail on '.$pingback_entity.')');
+		}
+		if ($pingback = $graph->get('prov:generated', $pingback_entity)) {
+			return array(false, $r3_fail_msg . ' (fail on '.$pingback_entity.')');
+		}		
+		if ($pingback = $graph->get($pingback_entity,'prov:wasDerivedFrom')) {
+			return array(false, $r3_fail_msg . ' (fail on '.$pingback_entity.')');
+		}
+	}
+	
+	return array(true);
 }
 ?>
