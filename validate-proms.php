@@ -61,4 +61,3 @@ function parse_proms_msg($headers, $body) {
 		return array(true, $triple_count);
 	}
 }
-?>

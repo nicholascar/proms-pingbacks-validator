@@ -60,4 +60,3 @@ function parse_provaq_msg($headers, $body) {
 		return array(true);
 	}
 }
-?>

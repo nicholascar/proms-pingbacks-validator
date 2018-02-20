@@ -211,4 +211,3 @@ function rule_entities_must_be_used($graph) {
 	
 	return array(true);
 }
-?>

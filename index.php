@@ -23,4 +23,3 @@
 		}
 		include 'theme/template-footer.inc';
 	}
-?>

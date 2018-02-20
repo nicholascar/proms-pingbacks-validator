@@ -29,7 +29,7 @@ table#formoptions td {
 </table>
 <br />
 <input type="hidden" name="ct" id="ct" value="text/uri-list" />
-<input type="hidden" name="loc" id="loc" value="/pingbacks/validator/validate-provaq" />
+<input type="hidden" name="loc" id="loc" value="/validate-provaq" />
 <input id="submit" type="submit" value="Validate" /><div id="loading"><img src="<?php print $WEB_SUBFOLDER; ?>/theme/img/spinner.gif" style="height:1em" /> processing...</div>
 <div id="results" style="width:800px; margin-top:10px; display:none; border:solid 1px black;">
 	<div id="result" name="result" style="padding:5px; overflow:auto;"></div>
@@ -47,13 +47,13 @@ table#formoptions td {
 				$('#contenttype').html(contenttypes);
 				$("#ct").attr('value', 'text/turtle');
 				$("#turtle").attr('checked', 'checked');
-				$('#loc').attr('value', '/pingbacks/validator/validate-proms');
+				$('#loc').attr('value', '/validate-proms');
 				$('.provaq').hide();
 				$('.proms').show();
 			} else {
 				$('#contenttype').html('Content Type: <input type="radio" name="contenttype" id="urilist" value="text/uri-list" checked="checked" /><code>text/uri-list</code>');
 				$("#ct").attr('value', 'text/uri-list');
-				$('#loc').attr('value', '/pingbacks/validator/validate-provaq');
+				$('#loc').attr('value', '/validate-provaq');
 				$('.provaq').show();
 				$('.proms').hide();
 			}

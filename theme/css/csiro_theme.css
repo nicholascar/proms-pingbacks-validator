@@ -2,7 +2,7 @@
   font-family: "UnitRoundedBlack";
   font-style: normal;
   font-weight: normal;
-  src: url("/theme/img/UnitRoundedWeb-Black.woff") format("woff");
+  src: url("/theme/css/UnitRoundedWeb-Black.woff") format("woff");
 }
 
 body {
@@ -58,7 +58,7 @@ h2, h3 {
 }
 
 h4, p, li {
-  font-family: Verdana;
+  font-family: Verdana, sans-serif;
 }
 
 p, li {
@@ -79,7 +79,7 @@ nav {
 }
  
 nav ul {
-  font-family: Arial, Verdana;
+  font-family: Arial, Verdana, Serif;
   font-size: 20px;
   margin: 0;
   padding: 0;
@@ -182,7 +182,7 @@ nav ul li ul li a {
 #footer-external-links li a {color: #0f4a84;}
 
 #navblue {
-  font-family: Verdana;
+  font-family: Verdana, sans-serif;
   color: white;
   font-weight:bold;	
   font-size:small;

@@ -1,2 +1,5 @@
 # ignore the RDF library
 easyrdf-0.9.0/
+
+# Jetbrains IDEs
+.idea/
