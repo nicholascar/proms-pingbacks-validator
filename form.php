@@ -19,18 +19,18 @@ table#formoptions td {
 		</th>
 		<td style="padding-left:30px;">
 			Message type:<br />
-			<input type="radio" name="msgtype" id="typeprovaq" value="provaq" checked="checked" /> PROV-AQ<br />
+			<input type="radio" name="msgtype" id="typeprovaq" value="provaq" checked /> PROV-AQ<br />
 			<input type="radio" name="msgtype" id="typeproms"  value="proms" /> PROMS<br />
 		</td>
 		<td id="contenttype" style="padding-left:30px;">
-			Content Type: <input type="radio" name="contenttype" id="urilist" value="text/uri-list" checked="checked" /><code>text/uri-list</code>
+			Content Type: <input type="radio" name="contenttype" id="urilist" value="text/uri-list" checked /><code>text/uri-list</code>
 		</td>
 	</tr>
 </table>
 <br />
 <input type="hidden" name="ct" id="ct" value="text/uri-list" />
 <input type="hidden" name="loc" id="loc" value="/validate-provaq" />
-<input id="submit" type="submit" value="Validate" /><div id="loading"><img src="<?php print $WEB_SUBFOLDER; ?>/theme/img/spinner.gif" style="height:1em" /> processing...</div>
+<input id="submit" type="submit" value="Validate" /> <div id="loading" style="display:none;"><img src="/theme/img/spinner.gif" style="height:1em" /> processing...</div>
 <div id="results" style="width:800px; margin-top:10px; display:none; border:solid 1px black;">
 	<div id="result" name="result" style="padding:5px; overflow:auto;"></div>
 </div>
@@ -51,7 +51,7 @@ table#formoptions td {
 				$('.provaq').hide();
 				$('.proms').show();
 			} else {
-				$('#contenttype').html('Content Type: <input type="radio" name="contenttype" id="urilist" value="text/uri-list" checked="checked" /><code>text/uri-list</code>');
+				$('#contenttype').html('Content Type: <input type="radio" name="contenttype" id="urilist" value="text/uri-list" checked /><code>text/uri-list</code>');
 				$("#ct").attr('value', 'text/uri-list');
 				$('#loc').attr('value', '/validate-provaq');
 				$('.provaq').show();

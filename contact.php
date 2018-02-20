@@ -1,5 +1,5 @@
 <h2>Contact</h2>
-<p>The PROMS team consists of members of <a href="http://www.csiro.au">CSIRO</a>'s <a href="http://www.csiro.au/en/Research/LWF">Land &amp;amp; Water</a> &amp;amp; <a href="http://www.csiro.au/en/Research/D61">Data61</a>.</p>
+<p>The PROMS team consists of members of <a href="http://www.csiro.au">CSIRO</a>'s <a href="http://www.csiro.au/en/Research/LWF">Land &amp; Water</a> &amp; <a href="http://www.csiro.au/en/Research/D61">Data61</a>.</p>
 <p>The lead developer of this pingbacks validator is:</p>
 
 <p>
