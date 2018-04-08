@@ -10,7 +10,7 @@
 
 <h2>How to use the Validator</h2>
 <h3>Form input</h3>
-<p>This validator contains a web form you can use to send pingback messages to the validation system, see <a href=<?php print $WEB_SUBFOLDER; ?>"/about"></a>. All of the various message type options are present on the form page and results, as per the PROV-AQ or the PROMS specs are displayed after message processing on screen.</p>
+<p>This validator contains a web form you can use to send pingback messages to the validation system, see <a href="/about"></a>. All of the various message type options are present on the form page and results, as per the PROV-AQ or the PROMS specs are displayed after message processing on screen.</p>
 <p>To use the form input method, you will need to formulate your pingback message body first and then enter it into the form.</p>
 <h3>Script/command line input</h3>
 <ol>
